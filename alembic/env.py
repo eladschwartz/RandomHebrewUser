@@ -10,6 +10,12 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from app.models.base import Base
 from app.config import settings
 
+from app.models.user_model import User
+from app.models.phone_model import PhoneNumber
+from app.models.date_of_birth_model import DateOfBirth
+from app.models.location_model import Location
+from app.models.seed_model import UserSeed
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
