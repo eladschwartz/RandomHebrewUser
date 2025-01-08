@@ -10,9 +10,6 @@ from slowapi.errors import RateLimitExceeded
 
 app = FastAPI()
 
-app.add_middleware(HTTPSRedirectMiddleware)
-
-
 limiter = Limiter(key_func=get_remote_address, default_limits=["5/minute"])
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
@@ -25,6 +22,8 @@ app.add_middleware(
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["Authorization", "Content-Type"],
 )
+
+app.add_middleware(HTTPSRedirectMiddleware)
 
 
 for router in ROUTERS:
