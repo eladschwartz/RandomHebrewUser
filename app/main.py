@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware, HTTPSRedirectMiddleware
-from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from .config import settings
 from .routers.routers import ROUTERS
 from slowapi import Limiter, _rate_limit_exceeded_handler
