@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from .config import settings
 from .routers.routers import ROUTERS
 from slowapi import Limiter, _rate_limit_exceeded_handler
@@ -9,6 +10,16 @@ from slowapi.middleware import SlowAPIMiddleware
 from slowapi.errors import RateLimitExceeded
 
 app = FastAPI()
+
+# Add trusted host middleware first
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=[
+        "randomhebrewuser.xyz",
+        "www.randomhebrewuser.xyz",
+        "randomhebrewuser-618cd838a33f.herokuapp.com"
+    ]
+)
 
 limiter = Limiter(key_func=get_remote_address, default_limits=["5/minute"])
 app.state.limiter = limiter
@@ -19,7 +30,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_methods=["GET"],
     allow_headers=["Authorization", "Content-Type"],
 )
 

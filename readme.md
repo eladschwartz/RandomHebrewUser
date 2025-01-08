@@ -18,7 +18,7 @@ A FastAPI-based asynchronous API that generates random user data with support fo
 ### Generate Random User
 
 ```http
-GET /api/
+GET https://www.randomhebrewuser.xyz/api/
 ```
 
 #### Query Parameters
@@ -66,7 +66,7 @@ GET /api/
 ### Generate Random User (No Parameters)
 
 ```http
-GET /api/
+GET https://www.randomhebrewuser.xyz/api/
 ```
 
 Generates a completely random user with a new seed.
@@ -74,7 +74,7 @@ Generates a completely random user with a new seed.
 ### Generate User with Specific Gender
 
 ```http
-GET /api/?gender=זכר
+GET https://www.randomhebrewuser.xyz/api/?gender=זכר
 ```
 
 Generates a random male user.
@@ -82,7 +82,7 @@ Generates a random male user.
 ### Generate User with Specific Seed
 
 ```http
-GET /api/?seed=test123
+GET https://www.randomhebrewuser.xyz/api/?seed=test123
 ```
 
 Generates a user based on the provided seed. Using the same seed will always return the same user data.
@@ -90,7 +90,7 @@ Generates a user based on the provided seed. Using the same seed will always ret
 ### Generate User with Both Gender and Seed
 
 ```http
-GET /api/?gender=נקבה&seed=test123
+GET https://www.randomhebrewuser.xyz/api/?gender=נקבה&seed=test123
 ```
 
 Generates a female user based on the provided seed.
