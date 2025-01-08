@@ -17,8 +17,11 @@ class Settings(BaseSettings):
         env_file=".env"
     
     @property
-    def origins(self) -> str:
-        return self.origin_dev if self.ENVIRONMENT == "development" else self.origins_prod
+    def origins(self) -> list[str]:
+        if self.ENVIRONMENT == "development":
+            return [self.origin_dev]
+        else:
+            return [origin.strip() for origin in self.origins_prod.split(",")]
         
     
     
