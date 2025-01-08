@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     database_username: str
     secret_key: str
     algorithm: str
-    origin_dev: str
+    origin_dev: str = "http://127.0.0.1:8000" 
     origins_prod: str
     
     class Config:
