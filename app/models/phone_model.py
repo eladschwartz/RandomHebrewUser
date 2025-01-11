@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String
 from .base import Base, get_random_record, get_record_by_id
-from sqlalchemy.ext.asyncio import AsyncSession
 
 class PhoneNumber(Base):
     __tablename__ = 'phones'

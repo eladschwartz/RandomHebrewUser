@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from .base import Base
+from ..database import AsyncSessionLocal
 
 class UserSeed(Base):
     __tablename__ = 'seeds'
@@ -13,20 +13,28 @@ class UserSeed(Base):
     dob_id = Column(Integer, ForeignKey('dob.id'), nullable=False)
     location_id = Column(Integer, ForeignKey('locations.id'), nullable=False)
 
-async def get_user_by_seed(db: AsyncSession, seed: str) -> UserSeed | None:
-    query = select(UserSeed).where(UserSeed.seed == seed)
-    result = await db.execute(query)
-    return result.scalar_one_or_none()
+async def get_user_by_seed(seed: str) -> UserSeed | None:
+    async with AsyncSessionLocal() as session:
+        try:
+            query = select(UserSeed).where(UserSeed.seed == seed)
+            result = await session.execute(query)
+            return result.scalar_one_or_none()
+        finally:
+            await session.close()
 
-async def create_user_seed(db: AsyncSession, seed: str,user_id: int,phone_id: int,dob_id: int,location_id: int) -> UserSeed:
-    user_seed = UserSeed(
-        seed=seed,
-        user_id=user_id,
-        phone_id=phone_id,
-        dob_id=dob_id,
-        location_id=location_id
-    )
-    db.add(user_seed)
-    await db.commit()
-    await db.refresh(user_seed)
-    return user_seed
+async def create_user_seed(seed: str,user_id: int,phone_id: int,dob_id: int,location_id: int) -> UserSeed:
+        async with AsyncSessionLocal() as session:
+            try:
+                user_seed = UserSeed(
+                    seed=seed,
+                    user_id=user_id,
+                    phone_id=phone_id,
+                    dob_id=dob_id,
+                    location_id=location_id
+                )
+                session.add(user_seed)
+                await session.commit()
+                await session.refresh(user_seed)
+                return user_seed
+            finally:
+                await session.close()

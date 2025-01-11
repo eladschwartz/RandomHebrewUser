@@ -1,7 +1,8 @@
 from pydantic_settings import BaseSettings
+from .enums import Environment
 
 class Settings(BaseSettings):
-    ENVIRONMENT: str
+    ENVIRONMENT: Environment
     
     database_hostname: str
     database_port: str
@@ -18,7 +19,7 @@ class Settings(BaseSettings):
     
     @property
     def origins(self) -> list[str]:
-        if self.ENVIRONMENT == "development":
+        if self.ENVIRONMENT == Environment.DEVELOPMENT:
             return [self.origin_dev]
         else:
             return [origin.strip() for origin in self.origins_prod.split(",")]

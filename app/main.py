@@ -8,6 +8,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.errors import RateLimitExceeded
+from .enums import Environment
 
 app = FastAPI()
 
@@ -17,24 +18,28 @@ app.add_middleware(
     allowed_hosts=[
         "randomhebrewuser.xyz",
         "www.randomhebrewuser.xyz",
-        "randomhebrewuser-618cd838a33f.herokuapp.com"
+        "randomhebrewuser-618cd838a33f.herokuapp.com" 
+        "localhost",  
+        "127.0.0.1"  
     ]
 )
 
-limiter = Limiter(key_func=get_remote_address, default_limits=["5/minute"])
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-app.add_middleware(SlowAPIMiddleware)
+if settings.ENVIRONMENT != Environment.DEVELOPMENT:
+    limiter = Limiter(key_func=get_remote_address, default_limits=["5/minute"])
+    app.state.limiter = limiter
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+    app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.origins,
     allow_credentials=True,
     allow_methods=["GET"],
-    allow_headers=["Authorization", "Content-Type"],
+    allow_headers=["Content-Type"],
 )
 
-app.add_middleware(HTTPSRedirectMiddleware)
+if settings.ENVIRONMENT != Environment.DEVELOPMENT:
+    app.add_middleware(HTTPSRedirectMiddleware)
 
 
 for router in ROUTERS:

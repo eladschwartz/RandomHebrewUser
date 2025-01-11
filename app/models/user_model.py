@@ -1,9 +1,8 @@
 from sqlalchemy import Column, Integer, String, select, func
-from sqlalchemy.ext.asyncio import AsyncSession
 from .base import Base, get_record_by_id
 import random
 from ..database import AsyncSessionLocal
-
+from ..enums import Gender
 
 class User(Base):
     __tablename__ = 'users'
@@ -21,7 +20,7 @@ async def get_user_by_id(id: int) -> User:
 async def get_random_user(gender: str | None = None) -> User:
     async with AsyncSessionLocal() as session:
         try:
-            valid_genders = {'זכר', 'נקבה'}  
+            valid_genders = {Gender.MALE, Gender.FEMALE}  
             if not isinstance(gender, str) or gender not in valid_genders:
                 gender = None
                 
