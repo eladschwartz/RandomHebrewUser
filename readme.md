@@ -17,9 +17,6 @@ A FastAPI-based asynchronous API that generates random user data with support fo
 
 ### Generate Random User
 
-```http
-GET https://www.randomhebrewuser.xyz/api/
-```
 
 #### Query Parameters
 
